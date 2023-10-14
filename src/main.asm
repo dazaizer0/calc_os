@@ -11,6 +11,7 @@ start:
 puts:
     push si
     push ax
+    push bx
 
 .loop:
     lodsb
@@ -24,6 +25,7 @@ puts:
     jmp .loop
 
 .done:
+    pop bx
     pop ax
     pop si
     ret
@@ -43,6 +45,7 @@ main:
 
 .halt:
     jmp .halt
+    
 
 msg_hello: db 'Hello OS', ENDL, 0
 
