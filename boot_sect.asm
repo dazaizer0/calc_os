@@ -7,7 +7,6 @@ bits 16
 start:
     jmp main
 
-
 puts:
     push si
     push ax
@@ -17,7 +16,7 @@ puts:
     lodsb
     or al, al
     jz .done
-    
+
     mov ah, 0x0E
     mov bh, 0
     int 0x10
@@ -27,27 +26,29 @@ puts:
 .done:
     pop bx
     pop ax
-    pop si
+    pop si    
     ret
+    
 
 main:
     mov ax, 0
     mov ds, ax
     mov es, ax
-
+    
     mov ss, ax
     mov sp, 0x7C00
 
-    mov si, msg_hello
+    mov si, msg_first
     call puts
 
     hlt
 
-.halt:
+.halt
     jmp .halt
-    
 
-msg_hello: db 'Hello OS', ENDL, 0
+
+
+msg_first: db 'Welcome to CalcOS!', ENDL, 0
 
 times 510-($-$$) db 0
 dw 0AA55h
