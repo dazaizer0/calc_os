@@ -26,15 +26,15 @@ puts:
 .done:
     pop bx
     pop ax
-    pop si    
+    pop si
     ret
-    
+
 
 main:
     mov ax, 0
     mov ds, ax
     mov es, ax
-    
+
     mov ss, ax
     mov sp, 0x7C00
 
