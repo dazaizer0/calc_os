@@ -3,13 +3,16 @@ bits 16
 
 %define ENDL 0x0D, 0x0A
 
+
 start:
     jmp main
+
 
 puts:
     push si
     push ax
     push bx
+
 
 .loop:
     lodsb
@@ -22,25 +25,27 @@ puts:
 
     jmp .loop
 
+
 .done:
     pop bx
     pop ax
     pop si
     ret
 
+
 keyboard_handler:
     pusha
-    in al, 0x60       ; Read the key code from the keyboard
+    in al, 0x60
     mov ah, 0x0E
-    int 0x10          ; Display the character on the screen
+    int 0x10
 
-    movzx eax, al     ; Zero-extend the character
+    movzx eax, al
     push eax
     push ebx
     mov ebx, input_buffer
-    movzx edx, byte [ebx]  ; Load the current buffer position
-    mov [ebx + edx], al ; Store the character in the input buffer
-    inc edx           ; Increment the buffer position
+    movzx edx, byte [ebx]
+    mov [ebx + edx], al
+    inc edx
     mov byte [ebx], dl
 
     pop ebx
@@ -48,6 +53,7 @@ keyboard_handler:
 
     popa
     iret
+
 
 main:
     mov ax, 0
@@ -63,14 +69,13 @@ main:
     mov si, msg_second
     call puts
 
-    cli  ; Disable interrupts
-    mov ah, 0      ; Set up the keyboard interrupt handler
-    mov al, 0x09    ; Numer przerwania klawiatury (0x09)
+    cli
+    mov ah, 0
+    mov al, 0x09
     mov di, keyboard_handler
     int 0x21
-    sti  ; Enable interrupts
+    sti
 
-    ; Initialize input buffer
     mov ebx, input_buffer
     mov byte [ebx], 0
 
@@ -78,12 +83,15 @@ main:
     hlt
     jmp .text_input_loop
 
+
 .halt:
     jmp .halt
 
-msg_first: db 'Welcome to CalcOS', ENDL, 0
+
+msg_first: db 'Welcome CalcOS', ENDL, 0
 msg_second: db 'system@cos:~$: ', 0
 input_buffer: times 64 db 0
+
 
 times 510-($-$$) db 0
 dw 0AA55h
