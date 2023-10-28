@@ -63,10 +63,10 @@ main:
     mov ss, ax
     mov sp, 0x7C00
 
-    mov si, msg_first
+    mov si, hello_msg
     call puts
-
-    mov si, msg_second
+    
+    mov si, input_msg
     call puts
 
     cli
@@ -79,19 +79,17 @@ main:
     mov ebx, input_buffer
     mov byte [ebx], 0
 
+
 .text_input_loop:
     hlt
     jmp .text_input_loop
 
-
 .halt:
     jmp .halt
 
-
-msg_first: db 'Welcome CalcOS', ENDL, 0
-msg_second: db 'system@cos:~$: ', 0
+hello_msg: db 'Welcome to CalcOS!', ENDL, 0
+input_msg: db 'system@cos:~$: ', 0
 input_buffer: times 64 db 0
-
 
 times 510-($-$$) db 0
 dw 0AA55h
